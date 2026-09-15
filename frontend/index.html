@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Calculate your GPA and CGPA instantly using the Nigerian university grading system. Free, fast, and accurate." />
+  <meta name="theme-color" content="#0a0f2e" />
+  <meta property="og:title" content="CALC — GPA & CGPA Calculator" />
+  <meta property="og:description" content="Nigeria's most accurate GPA/CGPA calculator with graphical analysis." />
+  <meta property="og:type" content="website" />
+  <title>CALC — GPA & CGPA Calculator</title>
+
+  <!-- Preconnect for performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <link rel="stylesheet" href="css/home.css" />
+</head>
+<body>
+
+  <!-- Skip to main content (accessibility) -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- ===================== NAV ===================== -->
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <a href="index.html" class="nav-logo" aria-label="CALC — Home">
+      <span class="logo-text">CALC</span>
+      <span class="logo-dot"></span>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navMenu" aria-label="Toggle navigation menu">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-menu" id="navMenu" role="list">
+      <li><a href="#hero" class="nav-link">Home</a></li>
+      <li><a href="#about" class="nav-link">About</a></li>
+      <li><a href="#how-it-works" class="nav-link">How It Works</a></li>
+      <li><a href="#contact" class="nav-link">Contact</a></li>
+      <li><a href="calculator.html" class="nav-cta" aria-label="Open the GPA calculator">Calculate Now</a></li>
+    </ul>
+  </nav>
+
+  <main id="main-content">
+
+    <!-- ===================== HERO ===================== -->
+    <section class="hero" id="hero" aria-labelledby="hero-heading">
+      <div class="hero-bg-grid" aria-hidden="true"></div>
+      <div class="hero-orbs" aria-hidden="true">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+      </div>
+      <div class="hero-content">
+        <div class="hero-badge">
+          <i class="fa-solid fa-graduation-cap" aria-hidden="true"></i>
+          Nigerian University Grading System
+        </div>
+        <h1 id="hero-heading">
+          Calculate Your <span class="text-gradient">GPA & CGPA</span><br />
+          In Seconds
+        </h1>
+        <p class="hero-sub">
+          Enter your courses, credit units, and scores. Get instant GPA per semester
+          and cumulative CGPA — with beautiful graphical analysis.
+        </p>
+        <div class="hero-actions">
+          <a href="calculator.html" class="btn btn-primary">
+            <i class="fa-solid fa-calculator" aria-hidden="true"></i>
+            Get Started Free
+          </a>
+          <a href="#how-it-works" class="btn btn-ghost">
+            <i class="fa-solid fa-play" aria-hidden="true"></i>
+            See How It Works
+          </a>
+        </div>
+        <div class="hero-stats" aria-label="Calculator statistics">
+          <div class="stat">
+            <span class="stat-number">9</span>
+            <span class="stat-label">Grade Levels</span>
+          </div>
+          <div class="stat-divider" aria-hidden="true"></div>
+          <div class="stat">
+            <span class="stat-number">∞</span>
+            <span class="stat-label">Semesters</span>
+          </div>
+          <div class="stat-divider" aria-hidden="true"></div>
+          <div class="stat">
+            <span class="stat-number">3</span>
+            <span class="stat-label">Chart Types</span>
+          </div>
+        </div>
+      </div>
+      <div class="hero-visual" aria-hidden="true">
+        <div class="grade-card-stack">
+          <div class="grade-card grade-a">
+            <span class="grade-label">A</span>
+            <span class="grade-point">4.0</span>
+            <span class="grade-range">75–100</span>
+          </div>
+          <div class="grade-card grade-b">
+            <span class="grade-label">B</span>
+            <span class="grade-point">3.25</span>
+            <span class="grade-range">65–69</span>
+          </div>
+          <div class="grade-card grade-c">
+            <span class="grade-label">C</span>
+            <span class="grade-point">2.75</span>
+            <span class="grade-range">56–59</span>
+          </div>
+          <div class="cgpa-display">
+            <span class="cgpa-label">Your CGPA</span>
+            <span class="cgpa-value" id="heroCounter">0.00</span>
+            <span class="cgpa-sub">First Class</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== CONCEPTS ===================== -->
+    <section class="concepts" id="about" aria-labelledby="concepts-heading">
+      <div class="container">
+        <div class="section-header">
+          <span class="eyebrow">Understand the basics</span>
+          <h2 id="concepts-heading">Key Concepts You Need to Know</h2>
+          <p>Before calculating, make sure you understand these four building blocks of your academic score.</p>
+        </div>
+        <div class="concepts-grid">
+          <article class="concept-card" tabindex="0">
+            <div class="concept-icon" aria-hidden="true">
+              <i class="fa-solid fa-book-open"></i>
+            </div>
+            <h3>Credit Unit</h3>
+            <p>A standardised measure of a course's academic workload. Typically 1–4 units per course, representing weekly contact hours plus out-of-class study time.</p>
+            <div class="concept-example">
+              <span class="example-label">Example</span>
+              Mathematics — 3 credit units
+            </div>
+          </article>
+          <article class="concept-card" tabindex="0">
+            <div class="concept-icon" aria-hidden="true">
+              <i class="fa-solid fa-chart-bar"></i>
+            </div>
+            <h3>Score &amp; Grade</h3>
+            <p>Your raw exam score (0–100) maps to a letter grade. Select the grading scale used by your school on the calculator page.</p>
+            <div class="concept-example">
+              <span class="example-label">Example</span>
+              Score 78 → Grade A → 4.0 or 5.0 CP
+            </div>
+          </article>
+          <article class="concept-card" tabindex="0">
+            <div class="concept-icon" aria-hidden="true">
+              <i class="fa-solid fa-star"></i>
+            </div>
+            <h3>Credit Point</h3>
+            <p>The numerical weight assigned to each grade. It ranges from 0.0 (F) to either 4.0 or 5.0 (A), depending on your selected school scale.</p>
+            <div class="concept-example">
+              <span class="example-label">Scale</span>
+              4.0 scale: A=4.0 · AB=3.5 · B=3.25
+            </div>
+          </article>
+          <article class="concept-card" tabindex="0">
+            <div class="concept-icon" aria-hidden="true">
+              <i class="fa-solid fa-calculator"></i>
+            </div>
+            <h3>Grade Point</h3>
+            <p>Credit Unit × Credit Point for each course. Sum all grade points then divide by total credit units to get your GPA.</p>
+            <div class="concept-example">
+              <span class="example-label">Formula</span>
+              3 CU × 3.5 CP = 10.5 GP
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== GRADE TABLE ===================== -->
+    <section class="grade-table-section" aria-labelledby="grade-table-heading">
+      <div class="container">
+        <div class="section-header">
+          <span class="eyebrow">Supported grading scales</span>
+          <h2 id="grade-table-heading">Score → Grade → Credit Point</h2>
+          <p>Choose the grading scale used by your school on the calculator page. Class standing is determined from the cumulative CGPA, not from an individual course.</p>
+        </div>
+        <h3>4.0 scale</h3>
+        <div class="table-wrapper" role="region" aria-label="4.0 grading scale table" tabindex="0">
+          <table class="grade-table">
+            <thead>
+              <tr>
+                <th scope="col">Score Range</th>
+                <th scope="col">Grade</th>
+                <th scope="col">Credit Point</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="grade-row-a"><td>75 – 100</td><td><span class="grade-badge a">A</span></td><td>4.00</td></tr>
+              <tr><td>70 – 74</td><td><span class="grade-badge ab">AB</span></td><td>3.50</td></tr>
+              <tr><td>65 – 69</td><td><span class="grade-badge b">B</span></td><td>3.25</td></tr>
+              <tr><td>60 – 64</td><td><span class="grade-badge bc">BC</span></td><td>3.00</td></tr>
+              <tr><td>56 – 59</td><td><span class="grade-badge c">C</span></td><td>2.75</td></tr>
+              <tr><td>50 – 55</td><td><span class="grade-badge cd">CD</span></td><td>2.50</td></tr>
+              <tr><td>45 – 49</td><td><span class="grade-badge d">D</span></td><td>2.25</td></tr>
+              <tr><td>40 – 44</td><td><span class="grade-badge e">E</span></td><td>2.00</td></tr>
+              <tr class="grade-row-f"><td>0 – 39</td><td><span class="grade-badge f">F</span></td><td>0.00</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>5.0 scale</h3>
+        <div class="table-wrapper" role="region" aria-label="5.0 grading scale table" tabindex="0">
+          <table class="grade-table">
+            <thead><tr><th scope="col">Score Range</th><th scope="col">Grade</th><th scope="col">Credit Point</th></tr></thead>
+            <tbody>
+              <tr class="grade-row-a"><td>70 – 100</td><td><span class="grade-badge a">A</span></td><td>5.00</td></tr>
+              <tr><td>60 – 69</td><td><span class="grade-badge b">B</span></td><td>4.00</td></tr>
+              <tr><td>50 – 59</td><td><span class="grade-badge c">C</span></td><td>3.00</td></tr>
+              <tr><td>45 – 49</td><td><span class="grade-badge d">D</span></td><td>2.00</td></tr>
+              <tr><td>40 – 44</td><td><span class="grade-badge e">E</span></td><td>1.00</td></tr>
+              <tr class="grade-row-f"><td>0 – 39</td><td><span class="grade-badge f">F</span></td><td>0.00</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== HOW IT WORKS ===================== -->
+    <section class="how-it-works" id="how-it-works" aria-labelledby="how-heading">
+      <div class="container">
+        <div class="section-header">
+          <span class="eyebrow">Step by step</span>
+          <h2 id="how-heading">How to Use the Calculator</h2>
+          <p>Follow these steps on the calculator page to get accurate results.</p>
+        </div>
+        <ol class="steps-list" aria-label="Calculator usage steps">
+          <li class="step-item">
+            <div class="step-number" aria-hidden="true">01</div>
+            <div class="step-content">
+              <h3>Enter Your Courses</h3>
+              <p>Type each course name in the Course column. Add as many courses as you have in that semester using the <strong>Add Course</strong> button.</p>
+            </div>
+          </li>
+          <li class="step-item">
+            <div class="step-number" aria-hidden="true">02</div>
+            <div class="step-content">
+              <h3>Enter Credit Units &amp; Scores</h3>
+              <p>Input the credit unit for each course and your exam score (0–100). The calculator will automatically determine your grade and credit point.</p>
+            </div>
+          </li>
+          <li class="step-item">
+            <div class="step-number" aria-hidden="true">03</div>
+            <div class="step-content">
+              <h3>Add More Semesters</h3>
+              <p>Click <strong>Add Semester</strong> to create additional semester tables. Switch between semesters using the dropdown selector.</p>
+            </div>
+          </li>
+          <li class="step-item">
+            <div class="step-number" aria-hidden="true">04</div>
+            <div class="step-content">
+              <h3>Calculate GPA &amp; CGPA</h3>
+              <p>Click <strong>Calculate GPA</strong> to see each semester's result, then <strong>Calculate CGPA</strong> for your cumulative average across all semesters.</p>
+            </div>
+          </li>
+          <li class="step-item">
+            <div class="step-number" aria-hidden="true">05</div>
+            <div class="step-content">
+              <h3>View Chart Analysis</h3>
+              <p>Select your school&#39;s 4.0 or 5.0 grading scale, then choose Bar, Line, or Pie chart to see a visual breakdown of your scores for any semester. Credit Point and Grade Point charts use that selected scale.</p>
+            </div>
+          </li>
+          <li class="step-item">
+            <div class="step-number" aria-hidden="true">06</div>
+            <div class="step-content">
+              <h3>Export Your Results</h3>
+              <p>Use the <strong>Export to PDF</strong> or <strong>Export CSV</strong> buttons to save your results for your records or share with an adviser.</p>
+            </div>
+          </li>
+        </ol>
+        <div class="cta-center">
+          <a href="calculator.html" class="btn btn-primary btn-lg">
+            <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+            Open the Calculator
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== FEATURES ===================== -->
+    <section class="features" aria-labelledby="features-heading">
+      <div class="container">
+        <div class="section-header">
+          <span class="eyebrow">Why use CALC</span>
+          <h2 id="features-heading">Built for Nigerian Students</h2>
+        </div>
+        <div class="features-grid">
+          <div class="feature-item">
+            <i class="fa-solid fa-bolt feature-icon" aria-hidden="true"></i>
+            <h3>Instant Results</h3>
+            <p>GPA and CGPA computed in real time as you enter scores. No waiting, no page reloads.</p>
+          </div>
+          <div class="feature-item">
+            <i class="fa-solid fa-shield-halved feature-icon" aria-hidden="true"></i>
+            <h3>100% Private</h3>
+            <p>All calculations happen in your browser. Your data never leaves your device — nothing is stored on any server.</p>
+          </div>
+          <div class="feature-item">
+            <i class="fa-solid fa-mobile-screen feature-icon" aria-hidden="true"></i>
+            <h3>Mobile Ready</h3>
+            <p>Works perfectly on any phone, tablet, or desktop. No app download needed.</p>
+          </div>
+          <div class="feature-item">
+            <i class="fa-solid fa-chart-pie feature-icon" aria-hidden="true"></i>
+            <h3>Visual Analysis</h3>
+            <p>Bar, line, and pie charts give you a clear picture of your academic performance each semester.</p>
+          </div>
+          <div class="feature-item">
+            <i class="fa-solid fa-file-export feature-icon" aria-hidden="true"></i>
+            <h3>Export Results</h3>
+            <p>Download a PDF report or CSV file of your grades to keep records or share with your academic adviser.</p>
+          </div>
+          <div class="feature-item">
+            <i class="fa-solid fa-infinity feature-icon" aria-hidden="true"></i>
+            <h3>Unlimited Semesters</h3>
+            <p>Add as many semesters and courses as your degree requires. No limits, completely free.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="footer" id="contact">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="nav-logo" aria-label="CALC — Home">
+          <span class="logo-text">CALC</span>
+          <span class="logo-dot"></span>
+        </a>
+        <p>A free GPA &amp; CGPA calculator built for Nigerian university students. Fast, accurate, and private.</p>
+        <div class="social-links" aria-label="Social media links">
+          <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fa-brands fa-facebook-f" aria-hidden="true"></i></a>
+          <a href="https://www.twitter.com" target="_blank" rel="noopener noreferrer" aria-label="Twitter / X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a>
+          <a href="https://www.instagram.com/emmanuel.oriade.3" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fa-brands fa-instagram" aria-hidden="true"></i></a>
+          <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in" aria-hidden="true"></i></a>
+          <a href="https://wa.link/o5fjku" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i></a>
+        </div>
+      </div>
+      <nav class="footer-nav" aria-label="Footer navigation">
+        <h4>Navigation</h4>
+        <ul role="list">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#how-it-works">How It Works</a></li>
+          <li><a href="calculator.html">Calculator</a></li>
+        </ul>
+      </nav>
+      <div class="footer-contact" aria-label="Contact information">
+        <h4>Contact Us</h4>
+        <address>
+          <p><i class="fa-solid fa-phone" aria-hidden="true"></i> <a href="tel:+2349137481691">(+234) 913 748 1691</a></p>
+          <p><i class="fa-solid fa-envelope" aria-hidden="true"></i> <a href="mailto:emmanueloriade70@gmail.com">emmanueloriade70@gmail.com</a></p>
+          <p><i class="fa-solid fa-location-dot" aria-hidden="true"></i> Nigeria</p>
+        </address>
+      </div>
+      <div class="footer-services">
+        <h4>Services</h4>
+        <ul role="list">
+          <li>GPA Calculator</li>
+          <li>CGPA Calculator</li>
+          <li>Chart Analysis</li>
+          <li>PDF Export</li>
+          <li>Web Development</li>
+          <li>App Development</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; <span id="currentYear"></span> Emmanuel Oluwapelumi. All rights reserved.</p>
+      <div class="footer-legal">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Use</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/home.js" defer></script>
+</body>
+</html>

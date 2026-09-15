@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Calculate your GPA and CGPA instantly using the Nigerian university grading system." />
+  <meta name="theme-color" content="#0a0f2e" />
+  <title>CALC — GPA & CGPA Calculator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="css/calculator.css" />
+</head>
+<body>
+
+  <a href="#calc-main" class="skip-link">Skip to calculator</a>
+
+  <!-- ═══ NAV ═══ -->
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <a href="index.html" class="nav-logo" aria-label="CALC — Home">
+      <span class="logo-text">CALC</span><span class="logo-dot"></span>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navMenu" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-menu" id="navMenu" role="list">
+      <li><a href="index.html" class="nav-link">Home</a></li>
+      <li><a href="index.html#about" class="nav-link">About</a></li>
+      <li><a href="index.html#contact" class="nav-link">Contact</a></li>
+    </ul>
+  </nav>
+
+  <main id="calc-main" class="calc-page">
+    <div class="calc-container">
+
+      <!-- Page header -->
+      <header class="calc-header">
+        <div class="calc-header-text">
+          <h1>GPA &amp; CGPA Calculator</h1>
+          <p>Enter your courses. Grade and credit point auto-calculate from your score.</p>
+        </div>
+        <div class="calc-header-actions">
+          <button class="btn btn-ghost btn-sm" id="exportCSV" aria-label="Export data to CSV">
+            <i class="fa-solid fa-file-csv" aria-hidden="true"></i> CSV
+          </button>
+          <button class="btn btn-ghost btn-sm" id="exportPDF" aria-label="Export results to PDF">
+            <i class="fa-solid fa-file-pdf" aria-hidden="true"></i> PDF
+          </button>
+          <button class="btn btn-ghost btn-sm" id="historyBtn" aria-label="View calculation history">
+            <i class="fa-solid fa-clock-rotate-left" aria-hidden="true"></i> History
+          </button>
+          <button class="btn btn-danger-ghost btn-sm" id="resetAll" aria-label="Reset all data">
+            <i class="fa-solid fa-rotate-left" aria-hidden="true"></i> Reset
+          </button>
+        </div>
+      </header>
+
+      <!-- Semester controls -->
+      <div class="semester-controls">
+        <div class="control-group">
+          <label for="semesterSelect" class="control-label">Active Semester</label>
+          <select id="semesterSelect" class="select-field">
+            <option value="1">Semester 1</option>
+            <option value="2">Semester 2</option>
+          </select>
+        </div>
+        <div class="control-group">
+          <label for="gradingScale" class="control-label">Grading Scale</label>
+          <select id="gradingScale" class="select-field">
+            <option value="4.0">4.0 scale</option>
+            <option value="5.0">5.0 scale</option>
+          </select>
+        </div>
+        <div class="control-buttons">
+          <button class="btn btn-outline btn-sm" id="addSemesterBtn">
+            <i class="fa-solid fa-plus" aria-hidden="true"></i> Add Semester
+          </button>
+          <button class="btn btn-outline btn-sm" id="addCourseBtn">
+            <i class="fa-solid fa-plus" aria-hidden="true"></i> Add Course
+          </button>
+          <button class="btn btn-outline btn-sm" id="removeSemesterBtn">
+            <i class="fa-solid fa-minus" aria-hidden="true"></i> Remove Semester
+          </button>
+        </div>
+      </div>
+
+      <!-- Live GPA bar -->
+      <div class="live-gpa-bar" aria-live="polite" aria-label="Live GPA display">
+        <div class="live-gpa-item">
+          <span class="live-label">Semester <span id="liveSemNum">1</span> GPA</span>
+          <span class="live-value" id="liveSemGPA">—</span>
+        </div>
+        <div class="live-gpa-divider" aria-hidden="true"></div>
+        <div class="live-gpa-item">
+          <span class="live-label">Overall CGPA</span>
+          <span class="live-value" id="liveCGPA">—</span>
+        </div>
+        <div class="live-gpa-divider" aria-hidden="true"></div>
+        <div class="live-gpa-item">
+          <span class="live-label">Classification</span>
+          <span class="live-value live-class" id="liveClass">—</span>
+        </div>
+      </div>
+
+      <!-- Semester tables -->
+      <div id="semesterTablesContainer" role="region" aria-label="Semester course tables"></div>
+
+      <!-- Calculate buttons -->
+      <div class="calc-actions">
+        <button class="btn btn-primary" id="calcGPABtn">
+          <i class="fa-solid fa-chart-simple" aria-hidden="true"></i> Calculate GPA
+        </button>
+        <button class="btn btn-secondary" id="calcCGPABtn">
+          <i class="fa-solid fa-graduation-cap" aria-hidden="true"></i> Calculate CGPA
+        </button>
+      </div>
+
+      <!-- Results panel -->
+      <section class="results-panel" id="resultsPanel" aria-labelledby="results-heading" hidden>
+        <h2 id="results-heading" class="sr-only">Calculation Results</h2>
+        <div class="results-grid" id="resultsGrid"></div>
+        <div class="cgpa-message" id="cgpaMessage" hidden aria-live="polite"></div>
+      </section>
+
+      <!-- ═══ ADVANCED CHART SECTION ═══ -->
+      <section class="chart-section" aria-labelledby="chart-heading">
+        <div class="chart-controls">
+          <h2 id="chart-heading" class="chart-title">
+            <i class="fa-solid fa-chart-column" aria-hidden="true"></i> Chart Analysis
+          </h2>
+
+          <!-- Row 1: semester + group + type -->
+          <div class="chart-control-row">
+            <div class="control-group">
+              <label for="chartSemSelect" class="control-label">Semester</label>
+              <select id="chartSemSelect" class="select-field select-sm"></select>
+            </div>
+            <div class="control-group">
+              <label for="chartTypeGroup" class="control-label">Category</label>
+              <select id="chartTypeGroup" class="select-field select-sm">
+                <option value="basic">Basic Charts</option>
+                <option value="advanced">Advanced Charts</option>
+                <option value="comparison">Comparison Charts</option>
+              </select>
+            </div>
+            <div class="control-group">
+              <label for="chartType" class="control-label">Chart Type</label>
+              <select id="chartType" class="select-field select-sm"></select>
+            </div>
+            <div class="control-group">
+              <label for="chartColorScheme" class="control-label">Colour Scheme</label>
+              <select id="chartColorScheme" class="select-field select-sm">
+                <option value="gold">Gold</option>
+                <option value="rainbow">Rainbow</option>
+                <option value="cool">Cool Blue</option>
+                <option value="warm">Warm Red</option>
+                <option value="green">Green</option>
+                <option value="mono">Monochrome</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Row 2: advanced options (conditional) -->
+          <div class="chart-control-row chart-advanced-row">
+            <div class="control-group" id="scatterAxisGroup" style="display:none">
+              <label for="scatterXAxis" class="control-label">Scatter X-Axis</label>
+              <select id="scatterXAxis" class="select-field select-sm">
+                <option value="credit">Credit Unit</option>
+                <option value="gradePoint">Grade Point</option>
+              </select>
+            </div>
+            <div class="control-group chart-toggle-group" id="trendlineGroup" style="display:none">
+              <label class="control-label">Trendline</label>
+              <label class="toggle-switch">
+                <input type="checkbox" id="showTrendline" role="switch" aria-label="Show trendline" />
+                <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                <span class="toggle-label">Show</span>
+              </label>
+            </div>
+            <div class="control-group chart-toggle-group" id="smoothGroup" style="display:none">
+              <label class="control-label">Smooth Lines</label>
+              <label class="toggle-switch">
+                <input type="checkbox" id="smoothLine" checked role="switch" aria-label="Smooth lines" />
+                <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                <span class="toggle-label">On</span>
+              </label>
+            </div>
+            <button class="btn btn-primary" id="analyzeBtn">
+              <i class="fa-solid fa-chart-bar" aria-hidden="true"></i> Generate Chart
+            </button>
+          </div>
+        </div>
+
+        <!-- Chart canvas + description panel -->
+        <div class="chart-wrapper">
+          <div class="chart-canvas-wrap">
+            <!-- Placeholder shown before first chart -->
+            <div class="chart-placeholder" id="chartPlaceholder" aria-hidden="true">
+              <i class="fa-solid fa-chart-column"></i>
+              <p>Select a chart type and click <strong>Generate Chart</strong></p>
+            </div>
+            <canvas id="chartCanvas" role="img" aria-label="Grade analysis chart" style="display:none"></canvas>
+          </div>
+
+          <div class="chart-description">
+            <h3><span class="logo-accent">CALC</span> · Chart Guide</h3>
+
+            <div class="chart-type-guide">
+              <div class="guide-group">
+                <h4><i class="fa-solid fa-shapes" aria-hidden="true"></i> Basic</h4>
+                <ul>
+                  <li><strong>Bar</strong> — scores per course, side by side</li>
+                  <li><strong>Horizontal Bar</strong> — same, rotated for long names</li>
+                  <li><strong>Line</strong> — score trend across courses</li>
+                  <li><strong>Pie</strong> — score share per course</li>
+                  <li><strong>Doughnut</strong> — pie with centre callout</li>
+                </ul>
+              </div>
+              <div class="guide-group">
+                <h4><i class="fa-solid fa-atom" aria-hidden="true"></i> Advanced</h4>
+                <ul>
+                  <li><strong>Scatter</strong> — score vs credit unit or grade point</li>
+                  <li><strong>Bubble</strong> — 3-axis: CU × score × credit point</li>
+                  <li><strong>Radar / Spider</strong> — balanced subject profile</li>
+                  <li><strong>Polar Area</strong> — radial score distribution</li>
+                  <li><strong>Area</strong> — filled line with trend overlay</li>
+                </ul>
+              </div>
+              <div class="guide-group">
+                <h4><i class="fa-solid fa-layer-group" aria-hidden="true"></i> Comparison</h4>
+                <ul>
+                  <li><strong>Stacked Bar</strong> — same courses across semesters</li>
+                  <li><strong>Multi-Semester Line</strong> — overlay all semesters</li>
+                  <li><strong>GPA Summary Bar</strong> — one bar per semester GPA</li>
+                </ul>
+              </div>
+            </div>
+
+            <p class="chart-guide-note"><strong>Scale note:</strong> Credit Point, Grade Point, GPA, and CGPA values follow the grading scale selected above. Choose 4.0 or 5.0 before generating a chart.</p>
+
+            <div class="class-guide">
+              <h4>Degree Classification by Scale</h4>
+              <p class="class-guide-scale">4.0 scale</p>
+              <ul aria-label="4.0 degree classification guide">
+                <li><span class="class-badge first">First Class</span> CGPA ≥ 3.50</li>
+                <li><span class="class-badge upper">2nd Upper</span> 3.00 – 3.49</li>
+                <li><span class="class-badge lower">2nd Lower</span> 2.50 – 2.99</li>
+                <li><span class="class-badge third">Third Class</span> 2.00 – 2.49</li>
+                <li><span class="class-badge pass">Pass</span> 1.00 – 1.99</li>
+              </ul>
+              <p class="class-guide-scale">5.0 scale</p>
+              <ul aria-label="5.0 degree classification guide">
+                <li><span class="class-badge first">First Class</span> CGPA ≥ 4.50</li>
+                <li><span class="class-badge upper">2nd Upper</span> 3.50 – 4.49</li>
+                <li><span class="class-badge lower">2nd Lower</span> 2.40 – 3.49</li>
+                <li><span class="class-badge third">Third Class</span> 1.50 – 2.39</li>
+                <li><span class="class-badge pass">Pass</span> 1.00 – 1.49</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ REVIEWS SECTION ═══ -->
+      <section class="reviews-section" aria-labelledby="reviews-heading">
+        <div class="reviews-header">
+          <div>
+            <h2 id="reviews-heading">
+              <i class="fa-solid fa-star" aria-hidden="true"></i> User Reviews
+            </h2>
+            <span class="reviews-avg" id="reviewsAvg" aria-label="Average rating"></span>
+          </div>
+        </div>
+        <div class="reviews-list" id="reviewsList" role="list" aria-label="User reviews"></div>
+        <p class="reviews-empty" id="reviewsEmpty" hidden>No reviews yet — be the first to rate CALC!</p>
+      </section>
+
+    </div><!-- /.calc-container -->
+  </main>
+
+  <!-- ═══ PRINT ZONE (invisible until PDF export) ═══ -->
+  <div id="printZone" class="print-zone" aria-hidden="true"></div>
+
+  <!-- ═══ HISTORY DRAWER ═══ -->
+  <div class="drawer-overlay" id="drawerOverlay" hidden aria-hidden="true"></div>
+  <aside class="history-drawer" id="historyDrawer" hidden role="complementary" aria-label="Calculation history">
+    <div class="drawer-header">
+      <h2><i class="fa-solid fa-clock-rotate-left" aria-hidden="true"></i> History</h2>
+      <div class="drawer-header-actions">
+        <button class="btn btn-ghost btn-sm" id="clearHistoryBtn">Clear All</button>
+        <button class="drawer-close" id="historyClose" aria-label="Close history drawer">
+          <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+    <p class="drawer-sub">Saved automatically each time you calculate CGPA or reset. Click Restore to reload any session.</p>
+    <div class="history-list" id="historyList" role="list" aria-label="Saved calculation sessions"></div>
+    <p class="history-empty" id="historyEmpty" hidden>No history yet. Calculate your CGPA to save your first session.</p>
+  </aside>
+
+  <!-- ═══ FEEDBACK MODAL ═══ -->
+  <div class="feedback-overlay" id="feedbackOverlay" hidden aria-hidden="true"></div>
+  <div class="feedback-panel" id="feedbackPanel" role="dialog" aria-modal="true" aria-labelledby="feedbackTitle" hidden>
+    <button class="feedback-close" id="feedbackClose" aria-label="Close feedback">
+      <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+    </button>
+    <div class="feedback-inner">
+      <div id="feedbackStep1">
+        <h3 id="feedbackTitle">
+          <i class="fa-solid fa-star" aria-hidden="true"></i> Rate CALC
+        </h3>
+        <p>How useful did you find this calculator?</p>
+        <div class="star-row" role="group" aria-label="Star rating">
+          <button class="star-btn" data-value="1" aria-label="1 star">★</button>
+          <button class="star-btn" data-value="2" aria-label="2 stars">★</button>
+          <button class="star-btn" data-value="3" aria-label="3 stars">★</button>
+          <button class="star-btn" data-value="4" aria-label="4 stars">★</button>
+          <button class="star-btn" data-value="5" aria-label="5 stars">★</button>
+        </div>
+        <span class="star-label" id="starLabelText" aria-live="polite"></span>
+      </div>
+      <div id="feedbackStep2">
+        <div class="feedback-field">
+          <label for="feedbackName" class="control-label">Your Name <span class="optional">(optional)</span></label>
+          <input type="text" id="feedbackName" class="feedback-input" placeholder="e.g. Tunde A." maxlength="60" />
+        </div>
+        <div class="feedback-field">
+          <label for="feedbackComment" class="control-label">Your Review <span class="optional">(optional)</span></label>
+          <textarea id="feedbackComment" class="feedback-textarea" rows="3" maxlength="500" placeholder="Share your experience..."></textarea>
+          <span class="char-count" id="feedbackCharCount">0 / 500</span>
+        </div>
+      </div>
+      <div id="feedbackStep3">
+        <button class="btn btn-primary" id="feedbackSubmit" disabled>
+          <i class="fa-solid fa-paper-plane" aria-hidden="true"></i> Submit Review
+        </button>
+      </div>
+      <div class="feedback-success" id="feedbackSuccess" hidden role="status">
+        <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+        <p>Thank you! Your review has been saved.</p>
+        <button class="btn btn-ghost btn-sm" id="feedbackDone">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ FEEDBACK FAB ═══ -->
+  <button class="feedback-fab" id="feedbackFab" aria-label="Rate or review CALC" title="Rate this app">
+    <i class="fa-solid fa-star" aria-hidden="true"></i>
+  </button>
+
+  <!-- ═══ RESET MODAL ═══ -->
+  <div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle" hidden>
+    <div class="modal">
+      <h3 id="modalTitle">Reset All Data?</h3>
+      <p id="modalMessage">This will clear all semesters. Your current session will be saved to History first so you can restore it later.</p>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" id="modalCancel">Cancel</button>
+        <button class="btn btn-danger" id="modalConfirm">Reset Everything</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast" role="alert" aria-live="assertive" aria-atomic="true"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" defer></script>
+  <script src="js/calculator.js" defer></script>
+</body>
+</html>
